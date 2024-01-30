@@ -6,14 +6,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>하트시그널 - 당신의 심장에 귀기울여보세요</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles/intro.css') }}">
+    <!-- Reference your compiled Tailwind CSS -->
+    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
 </head>
 
-<body>
-    <div class="intro-container">
-        <h2>당신의 심장❤️에 귀기울여보세요</h2>
-        <a href="{{ url_for('index') }}" class="start-button">시작하기</a>
+<body class="bg-gray-100 flex justify-center items-center h-screen">
+    <div class="text-center">
+        <h2 class="text-4xl text-blue-600 font-bold mb-4">당신의 심장❤️에 귀기울여보세요</h2>
+        <a href="{{ url_for('index') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            시작하기
+        </a>
     </div>
 </body>
 
 </html>
+

@@ -5,15 +5,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Audio Recorder</title>
+    <title>하트시그널 심장소리 녹음</title>
+    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
 </head>
 
 <body>
-    <h1>Audio Recorder</h1>
-    <p id="status">Ready to record</p>
-    <button id="recordButton">Start Recording</button>
-    <button id="stopButton" disabled>Stop Recording</button>
-    <script>
+    <h1 class="text-4xl font-bold my-5">HeartSignal Record and Analyse</h1>
+    <p id="status" class="text-lg mb-3">Ready to record</p>
+    <button id="recordButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-2">Start Recording</button>
+    <button id="stopButton" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded my-2" disabled>Stop Recording</button>
+     <script>
         let mediaRecorder;
         let audioChunks = [];
         let mediaStream;
