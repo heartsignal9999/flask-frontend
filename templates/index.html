@@ -1,0 +1,86 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Recorder</title>
+</head>
+
+<body>
+    <h1>Audio Recorder</h1>
+    <p id="status">Ready to record</p>
+    <button id="recordButton">Start Recording</button>
+    <button id="stopButton" disabled>Stop Recording</button>
+    <script>
+        let mediaRecorder;
+        let audioChunks = [];
+        let mediaStream;
+
+        document.getElementById("recordButton").addEventListener("click", function () {
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaStream = stream;  // 스트림 저장
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.start();
+
+                    document.getElementById("status").innerText = "Recording...";
+
+                    mediaRecorder.addEventListener("dataavailable", event => {
+                        audioChunks.push(event.data);
+                    });
+
+                    mediaRecorder.addEventListener("stop", () => {
+                        document.getElementById("status").innerText = "Recording stopped. Uploading...";
+
+                        const audioBlob = new Blob(audioChunks);
+                        const formData = new FormData();
+                        formData.append("audioFile", audioBlob);
+
+                        fetch("/upload", {
+                            method: "POST",
+                            body: formData
+                        }).then(response => {
+                            if (response.ok) {
+                                return response.text();
+                            }
+                            throw new Error('Network response was not ok.');
+                        }).then(data => {
+                            document.getElementById("status").innerText = "Upload and processing complete. ";
+                            // 스펙트로그램 이미지 링크 추가
+                            let imgLink = document.createElement('a');
+                            imgLink.href = data.split('Image URL: ')[1];
+                            imgLink.innerText = 'View Spectrogram';
+                            imgLink.target = '_blank';
+                            document.getElementById("status").appendChild(imgLink);
+                        }).catch(error => {
+                            console.error('There has been a problem with your fetch operation:', error);
+                            document.getElementById("status").innerText = "Upload failed.";
+                        });
+
+                        audioChunks = [];
+                    });
+
+                    this.disabled = true;
+                    document.getElementById("stopButton").disabled = false;
+                }).catch(error => {
+                    console.error('Error accessing media devices:', error);
+                    document.getElementById("status").innerText = "Error accessing media devices.";
+                });
+        });
+
+        document.getElementById("stopButton").addEventListener("click", function () {
+            mediaRecorder.stop();
+
+            // 마이크 스트림 닫기
+            mediaStream.getTracks().forEach(track => track.stop());
+
+            document.getElementById("status").innerText = "Stopping recording...";
+            this.disabled = true;
+            document.getElementById("recordButton").disabled = false;
+        });
+    </script>
+</body>
+
+</html>

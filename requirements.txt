@@ -1,0 +1,9 @@
+flask
+fastapi
+uvicorn
+requests
+librosa
+matplotlib
+soundfile
+pydub
+google-cloud-storage==1.43.0
