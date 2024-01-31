@@ -1,23 +1,30 @@
 <!-- templates/intro.html -->
 <!DOCTYPE html>
 <html lang="ko">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>하트시그널 - 당신의 심장에 귀기울여보세요</title>
-    <!-- Reference your compiled Tailwind CSS -->
-    <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
-</head>
-
-<body class="bg-gray-100 flex justify-center items-center h-screen">
-    <div class="text-center">
-        <h2 class="text-4xl text-blue-600 font-bold mb-4">당신의 심장❤️에 귀기울여보세요</h2>
-        <a href="{{ url_for('index') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-            시작하기
+    <link href="/static/css/output.css" rel="stylesheet" />
+    <link href="/static/css/branding.css" rel="stylesheet" />
+  </head>
+  <body class="bg-gray-100 flex justify-center items-center h-screen text-center">
+    <div>
+      <div class="bg-gray-100 flex justify-center items-center h-screen text-center">
+        <div>
+          <div class="text-4xl font-bold mb-1">
+            <span class="text-[var(--color-heart-signal-pink)]">Heart</span>
+            <span class="text-[var(--color-heart-signal-blue)]">Signal</span>
+          </div>
+          <div class="text-xl text-[#7b6f72] font-bold">
+            당신의 심장❤️에 귀기울여보세요
+          </div>
+        </div>
+      </div>
+      <div>
+        <a href="/index" class="text-white text-center fixed bottom-2 left-2 right-2 py-2 rounded font-bold custom-button">
+          시작하기
         </a>
+      </div>
     </div>
-</body>
-
+  </body>
 </html>
-
