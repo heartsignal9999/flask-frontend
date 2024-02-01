@@ -1,3 +1,4 @@
+# config.py
 import os
 
 # 임시 파일 저장을 위한 디렉토리 경로

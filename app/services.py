@@ -1,4 +1,4 @@
-# main.py
+# app/services.py
 import os
 import librosa
 import librosa.display

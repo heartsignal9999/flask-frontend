@@ -3,3 +3,4 @@ node_modules
 output.css
 static/blob.png
 run.sh
+__pycache__

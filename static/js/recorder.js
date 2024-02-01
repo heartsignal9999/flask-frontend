@@ -1,4 +1,4 @@
-// recorder.js
+// static/js/recorder.js
 let mediaRecorder;
 let audioChunks = [];
 let mediaStream;
@@ -27,10 +27,11 @@ recordButton.addEventListener("click", function () {
         mediaRecorder.addEventListener("stop", () => {
           statusText.innerText = "Recording stopped. Uploading...";
           recordButton.style.display = "none"; // Hide button during upload
-
-          const audioBlob = new Blob(audioChunks);
+      
+          const audioBlob = new Blob(audioChunks, { type: 'audio/wav' }); // MIME 타입을 audio/wav로 설정
           const formData = new FormData();
           formData.append("audioFile", audioBlob);
+      
 
           fetch("/upload", {
             method: "POST",
@@ -52,6 +53,12 @@ recordButton.addEventListener("click", function () {
               img.src = data.imageUrl;
               img.alt = "Spectrogram";
               statusText.appendChild(img);
+
+              // Create and display audio player
+              let audioPlayer = document.createElement("audio");
+              audioPlayer.controls = true;
+              audioPlayer.src = data.audioUrl;
+              statusText.appendChild(audioPlayer);
             })
             .catch((error) => {
               console.error(
