@@ -1,4 +1,8 @@
 // static/js/uiController.js
+
+let timerInterval; // 타이머 인터벌을 저장할 변수
+let startTime; // 녹음 시작 시간
+
 function setRecordButtonState({ text, bgRemoveClasses, bgAddClasses, disabled }) {
   const recordButton = document.getElementById("recordButton");
   recordButton.innerText = text;
@@ -7,13 +11,43 @@ function setRecordButtonState({ text, bgRemoveClasses, bgAddClasses, disabled })
   recordButton.disabled = disabled;
 }
 
+// 타이머를 시작하고 업데이트하는 함수
+function startTimer() {
+  startTime = Date.now();
+  timerInterval = setInterval(updateTimer, 500); // 0.5초마다 타이머 업데이트
+}
+
+// 타이머를 화면에 표시하는 함수
+function updateTimer() {
+  const elapsed = Date.now() - startTime;
+  const seconds = Math.floor(elapsed / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+
+  const formattedTime = `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  document.getElementById("timer").innerText = formattedTime;
+}
+
+// 타이머를 정지하고 초기화하는 함수
+function stopTimer() {
+  clearInterval(timerInterval);
+  document.getElementById("timer").innerText = "";
+}
+
 function updateButtonForRecording() {
   setRecordButtonState({
-    text: "Stop Recording",
+    text: "Stop Recording ",
     bgRemoveClasses: ["bg-blue-500", "hover:bg-blue-700"],
     bgAddClasses: ["bg-red-500", "hover:bg-red-700"],
     disabled: false
   });
+
+  // 타이머 엘리먼트 추가
+  const timerElement = document.createElement("span");
+  timerElement.id = "timer";
+  document.getElementById("recordButton").appendChild(timerElement);
+
+  startTimer(); // 타이머 시작
 }
 
 function updateButtonForNotRecording() {

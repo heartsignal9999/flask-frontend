@@ -75,7 +75,7 @@ recordButton.addEventListener("click", function () {
 
   if (!isRecording) {
     startRecording(onDataAvailable, onStopRecording);
-    statusText.innerText = "Recording...";
+    statusText.innerText = "녹음 중입니다. 5초 이상 심장음을 녹음하세요.";
     updateButtonForRecording();
     isRecording = true;
   } else {
