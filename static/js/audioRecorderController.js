@@ -10,6 +10,17 @@ let currentImage = null;
 
 const recordButton = document.getElementById("recordButton");
 const statusText = document.getElementById("status");
+const imageElement = document.querySelector("img[src$='heartsignal.png']");
+const descriptionElement = document.getElementById("description");
+
+const hideImageAndDescription = () => {
+  if (imageElement) {
+    imageElement.style.display = "none";
+  }
+  if (descriptionElement) {
+    descriptionElement.style.display = "none";
+  }
+};
 
 const onDataAvailable = (event) => {
   audioChunks.push(event.data);
@@ -56,8 +67,8 @@ const onUploadSuccess = (data) => {
 
   resultContainer.appendChild(img);
   resultContainer.appendChild(audioPlayer);
-
   updateButtonForNotRecording();
+  hideImageAndDescription();
 };
 
 const onUploadFailure = (error) => {
@@ -65,6 +76,7 @@ const onUploadFailure = (error) => {
   statusText.innerText = "Upload failed.";
   recordButton.style.display = "block"; // Show button after failed upload
   updateButtonForNotRecording();
+  hideImageAndDescription();
 };
 
 recordButton.addEventListener("click", function () {
