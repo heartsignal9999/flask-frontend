@@ -1,38 +1,37 @@
 <!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>하트시그널 심장소리 녹음</title>
-    <link
-      href="{{ url_for('static', filename='css/output.css') }}"
-      rel="stylesheet"
-    />
-    <link href="/static/css/branding.css" rel="stylesheet" />
-  </head>
 
-  <body class="bg-gray-100">
-    <!-- Adjusted the background color to match the design aesthetic -->
-    <div class="min-h-screen flex flex-col justify-center items-center">
-      <!-- Flex container to center content -->
-      <h1 class="text-4xl font-bold my-5 text-center">
-        심음(heart sound) 녹음 & 분석
-      </h1>
-      <div class="my-1 text-center">
-        <div class="font-bold my-2">Start Recording 버튼을 누르시면 녹음이 시작됩니다.</div>
-        <div>현재 하트시그널은 베타테스트 중입니다.</div><div>녹음하신 파일은 클라우드에 저장되어 테스트 기간(~2월 20일) 동안 보유됩니다.</div>
-      </div>
-    <p id="status" class="text-lg mb-3 text-center">Ready to record</p>
-    <div class="flex flex-col space-y-2">
-      <!-- Stack buttons vertically -->
-      <button
-        id="recordButton"
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-      >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>하트시그널 심장소리 녹음</title>
+  <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet" />
+  <link href="/static/css/branding.css" rel="stylesheet" />
+</head>
+
+<body class="bg-gray-100">
+  <div class="min-h-screen flex flex-col justify-center items-center">
+    <h1 class="text-4xl font-bold my-5 text-center">
+      심음(heart sound) 녹음 & 분석
+    </h1>
+    <div class="my-1 text-center">
+      <div>현재 하트시그널은 베타테스트 중입니다.</div>
+      <div>녹음하신 파일은 클라우드에 저장되어 테스트 기간(~2월 20일) 동안 보유됩니다.</div>
+    </div>
+
+    <!-- Move the <p id="status"> to be above the button -->
+    <p id="status" class="text-lg mb-3 text-center fixed bottom-16 left-2 right-2">Ready to record</p>
+
+    <div>
+      <button id="recordButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold fixed bottom-2 left-2 right-2 py-2 px-4 rounded">
         Start Recording
       </button>
     </div>
-    <script src="{{ url_for('static', filename='js/recorder.js') }}"></script>
-  </body>
+
+    <script src="{{ url_for('static', filename='js/audioRecorderController.js') }}" type="module"></script>
+    <script src="{{ url_for('static', filename='js/uiController.js') }}" type="module"></script>
+  </div>
+</body>
+
 </html>
