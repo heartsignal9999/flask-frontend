@@ -1,26 +1,9 @@
-# app.py
-from flask import Flask, render_template, request, send_from_directory
-from werkzeug.utils import secure_filename
-from google.cloud import storage
+# main.py
 import os
 import librosa
 import librosa.display
 import numpy as np
 import matplotlib.pyplot as plt
-import soundfile as sf
-from pydub import AudioSegment
-
-
-app = Flask(__name__, static_folder='static')
-
-@app.route('/')
-def main():
-    return render_template('intro.html')
-
-@app.route('/index')
-def index():
-    return render_template('index.html')
-
 
 # Mel 범위로 변환
 def get_mel_spectrogram(wave_form, sample_rate, n_mels=96, frame_length=0.025, frame_stride=0.01):
@@ -84,53 +67,3 @@ def draw_mel_square_spec_and_save(mel, sample_rate, frame_stride, save_path, fil
     plt.savefig(full_save_path, bbox_inches='tight', pad_inches=0)
     plt.colorbar(format='%+2.0f dB')
     plt.show()
-
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    if 'audioFile' not in request.files:
-        return 'No file part', 400
-
-    file = request.files['audioFile']
-    if file.filename == '':
-        return 'No selected file', 400
-
-    if file:
-        # 파일 저장 및 처리 로직
-        filename = secure_filename(file.filename)
-        temp_path = os.path.join('temp', filename)
-        file.save(temp_path)
-
-        # WebM을 WAV로 변환
-        wav_filename = filename.split('.')[0] + '.wav'
-        AudioSegment.from_file(temp_path).export(wav_filename, format='wav')
-
-        # WAV 파일 처리 및 Mel 스펙트로그램 생성
-        y, sr = librosa.load(wav_filename, sr=None)
-        mel = get_mel_spectrogram(y, sr)
-        
-        # 스펙트로그램 이미지 저장
-        img_filename = wav_filename.split('.')[0] + '.png'
-        frame_stride=0.01
-        draw_mel_square_spec_and_save(mel, sr, frame_stride, 'static', img_filename)
-
-        # 임시 파일 삭제
-        os.remove(temp_path)
-        os.remove(wav_filename)
-
-        # 이미지 URL 반환
-        return f'File uploaded and processed successfully. Image URL: /static/{img_filename}', 200
-
-def call_cloud_function(file_path):
-    url = "https://REGION-PROJECT_ID.cloudfunctions.net/FUNCTION_NAME"  # 실제 URL로 대체해야 함
-
-    with open(file_path, 'rb') as f:
-        files = {'file': f}
-        response = requests.post(url, files=files)
-
-    return response.text
-
-# 실행코드
-if __name__ == '__main__':
-    if not os.path.exists('temp'):
-        os.makedirs('temp')
-    app.run(debug=True)
