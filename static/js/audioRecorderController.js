@@ -5,6 +5,8 @@ import { updateButtonForRecording, updateButtonForNotRecording, showRecordingSto
 
 let isRecording = false;
 let audioChunks = [];
+let currentAudioPlayer = null;
+let currentImage = null;
 
 const recordButton = document.getElementById("recordButton");
 const statusText = document.getElementById("status");
@@ -13,21 +15,6 @@ const onDataAvailable = (event) => {
   audioChunks.push(event.data);
 };
 
-recordButton.addEventListener("click", function () {
-  if (!isRecording) {
-    startRecording(onDataAvailable, onStopRecording);
-    statusText.innerText = "Recording...";
-    updateButtonForRecording();
-    startTimer(); // Start the timer
-    isRecording = true;
-  } else {
-    stopRecording();
-    stopTimer(); // Stop the timer
-    statusText.innerText = "Stopping recording...";
-    updateButtonForNotRecording();
-  }
-});
-
 const onStopRecording = () => {
   showRecordingStoppedOnButton();  // 상태 메시지 표시
   uploadAudio(audioChunks, onUploadSuccess, onUploadFailure);
@@ -35,22 +22,40 @@ const onStopRecording = () => {
   isRecording = false;
 };
 
+const resultContainer = document.getElementById("resultContainer");
+
 const onUploadSuccess = (data) => {
   restoreRecordButtonAfterUpload();
-  statusText.innerText = "Upload and processing complete.";
-  recordButton.style.display = "block"; // Show button after upload
+  statusText.innerText = "Upload and processing complete."; 
 
-  // Display spectrogram image on the page
+  // 기존 이미지 제거
+  if (currentImage) {
+    currentImage.remove();
+  }
+
+  // 새 이미지 생성 및 저장
   let img = document.createElement("img");
   img.src = data.imageUrl;
   img.alt = "Spectrogram";
-  statusText.appendChild(img);
+  currentImage = img; // 현재 이미지를 저장
 
-  // Create and display audio player
+  // 기존 오디오 플레이어 제거
+  if (currentAudioPlayer) {
+    currentAudioPlayer.remove();
+  }
+
+  // 새 오디오 플레이어 생성 및 저장
   let audioPlayer = document.createElement("audio");
   audioPlayer.controls = true;
   audioPlayer.src = data.audioUrl;
-  statusText.appendChild(audioPlayer);
+  currentAudioPlayer = audioPlayer; // 현재 오디오 플레이어를 저장
+
+  // statusText 요소 바로 전에 이미지와 오디오 플레이어 추가
+  statusText.parentNode.insertBefore(img, statusText);
+  statusText.parentNode.insertBefore(audioPlayer, statusText);
+
+  resultContainer.appendChild(img);
+  resultContainer.appendChild(audioPlayer);
 
   updateButtonForNotRecording();
 };
@@ -63,6 +68,11 @@ const onUploadFailure = (error) => {
 };
 
 recordButton.addEventListener("click", function () {
+  // 버튼이 비활성화된 상태에서는 아무런 동작도 수행하지 않습니다.
+  if (recordButton.disabled) {
+    return;
+  }
+
   if (!isRecording) {
     startRecording(onDataAvailable, onStopRecording);
     statusText.innerText = "Recording...";

@@ -17,21 +17,22 @@
     </h1>
     <div class="my-1 text-center">
       <div>현재 하트시그널은 베타테스트 중입니다.</div>
-      <div>녹음하신 파일은 클라우드에 저장되어 테스트 기간(~2월 20일) 동안 보유됩니다.</div>
+      <div>
+        녹음하신 파일은 클라우드에 저장되어 테스트 기간(~2월 20일) 동안
+        보유됩니다.
+      </div>
     </div>
-
-    <!-- Move the <p id="status"> to be above the button -->
-    <p id="status" class="text-lg mb-3 text-center fixed bottom-16 left-2 right-2">Ready to record</p>
-
-    <div>
-      <button id="recordButton" class="bg-blue-500 hover:bg-blue-700 text-white font-bold fixed bottom-2 left-2 right-2 py-2 px-4 rounded">
-        Start Recording
-      </button>
+    <div id="resultContainer" class="mt-5">
     </div>
-
-    <script src="{{ url_for('static', filename='js/audioRecorderController.js') }}" type="module"></script>
-    <script src="{{ url_for('static', filename='js/uiController.js') }}" type="module"></script>
   </div>
+  <div class="fixed bottom-10 w-full bg-gray-200">
+    <div id="status" class="text-lg mb-3 text-center">녹음 준비가 완료되었습니다.</div>
+    <a id="recordButton" class="text-white text-center fixed left-2 bottom-2 right-2 py-2 rounded font-bold bg-blue-500 hover:bg-blue-700">
+      Start Recording
+    </a>
+  </div>
+  <script src="{{ url_for('static', filename='js/audioRecorderController.js') }}" type="module"></script>
+  <script src="{{ url_for('static', filename='js/uiController.js') }}" type="module"></script>
 </body>
 
 </html>
