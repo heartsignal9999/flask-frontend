@@ -14,7 +14,7 @@ function setRecordButtonState({ text, bgRemoveClasses, bgAddClasses, disabled })
 // 타이머를 시작하고 업데이트하는 함수
 function startTimer() {
   startTime = Date.now();
-  timerInterval = setInterval(updateTimer, 500); // 0.5초마다 타이머 업데이트
+  timerInterval = setInterval(updateTimer, 1000); // 매초 타이머 업데이트
 }
 
 // 타이머를 화면에 표시하는 함수
@@ -24,7 +24,7 @@ function updateTimer() {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
 
-  const formattedTime = `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+  const formattedTime = ` ${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
   document.getElementById("timer").innerText = formattedTime;
 }
 
@@ -35,24 +35,30 @@ function stopTimer() {
 }
 
 function updateButtonForRecording() {
-  setRecordButtonState({
-    text: "Stop Recording ",
-    bgRemoveClasses: ["bg-blue-500", "hover:bg-blue-700"],
-    bgAddClasses: ["bg-red-500", "hover:bg-red-700"],
-    disabled: false
-  });
-
   // 타이머 엘리먼트 추가
   const timerElement = document.createElement("span");
   timerElement.id = "timer";
-  document.getElementById("recordButton").appendChild(timerElement);
+
+  // 버튼의 현재 상태를 초기화하고 타이머 엘리먼트 추가
+  const recordButton = document.getElementById("recordButton");
+  recordButton.innerHTML = ''; // 기존 내용을 지움
+  recordButton.appendChild(timerElement);
+
+  // 버튼에 '녹음 종료' 텍스트 추가
+  const textNode = document.createTextNode(" 녹음 종료");
+  recordButton.appendChild(textNode);
+
+  // 버튼의 나머지 상태 설정
+  recordButton.classList.remove("bg-blue-500", "hover:bg-blue-700");
+  recordButton.classList.add("bg-red-500", "hover:bg-red-700");
+  recordButton.disabled = false;
 
   startTimer(); // 타이머 시작
 }
 
 function updateButtonForNotRecording() {
   setRecordButtonState({
-    text: "Start Recording",
+    text: "새로운 녹음 시작",
     bgRemoveClasses: ["bg-gray-500", "hover:bg-red-700"],
     bgAddClasses: ["bg-blue-500", "hover:bg-blue-700"],
     disabled: false
@@ -61,7 +67,7 @@ function updateButtonForNotRecording() {
 
 function showRecordingStoppedOnButton() {
   setRecordButtonState({
-    text: "Recording Stopped. Uploading...",
+    text: "파일을 업로드합니다...",
     bgRemoveClasses: ["bg-blue-500", "hover:bg-blue-700", "bg-red-500", "hover:bg-red-700"],
     bgAddClasses: ["bg-gray-500"],
     disabled: true

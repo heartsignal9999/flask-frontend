@@ -26,7 +26,7 @@ const resultContainer = document.getElementById("resultContainer");
 
 const onUploadSuccess = (data) => {
   restoreRecordButtonAfterUpload();
-  statusText.innerText = "Upload and processing complete."; 
+  statusText.innerText = "녹음 업로드와 처리가 완료되었습니다."; 
 
   // 기존 이미지 제거
   if (currentImage) {
@@ -80,7 +80,7 @@ recordButton.addEventListener("click", function () {
     isRecording = true;
   } else {
     stopRecording();
-    statusText.innerText = "Stopping recording...";
+    statusText.innerText = "녹음파일 처리중...";
     updateButtonForNotRecording();
   }
 });
