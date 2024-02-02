@@ -6,12 +6,12 @@ import librosa.display
 import numpy as np
 import matplotlib.pyplot as plt
 
-def convert_to_mp3(source_path, target_path):
+def convert_to_wav(source_path, target_path):
     """
-    Converts an audio file to MP3 format.
+    Converts an audio file to WAV format.
     """
     audio = AudioSegment.from_file(source_path)
-    audio.export(target_path, format='mp3')
+    audio.export(target_path, format='wav')
 
 # Mel 범위로 변환
 def get_mel_spectrogram(wave_form, sample_rate, n_mels=96, frame_length=0.025, frame_stride=0.01):
@@ -62,7 +62,7 @@ def draw_mel_square_spec_and_save(mel, sample_rate, frame_stride, save_path, fil
     fig_width = total_duration_sec  # 1 second = 1 inch
 
     # Create a figure with a fixed height of 3 inches and a variable width
-    fig, ax = plt.subplots(figsize=(fig_width, 3), dpi=95)  # 3 inches tall, variable width
+    _, ax = plt.subplots(figsize=(fig_width, 3), dpi=95)  # 3 inches tall, variable width
 
     # Display the Mel spectrogram
     librosa.display.specshow(S_dB, sr=sample_rate, hop_length=hop_length)
@@ -73,14 +73,12 @@ def draw_mel_square_spec_and_save(mel, sample_rate, frame_stride, save_path, fil
     plt.tight_layout()
     full_save_path = os.path.join(save_path, filename)
     plt.savefig(full_save_path, bbox_inches='tight', pad_inches=0)
-    # plt.colorbar(format='%+2.0f dB')
-    # plt.show()
 
-def process_audio_and_upload(mp3_path, temp_dir, current_time):
+def process_audio_and_save(wav_path, temp_dir, current_time):
     """
     Processes the audio file and returns the resulting spectrogram information.
     """
-    y, sr = librosa.load(mp3_path, sr=None)  # Load audio data
+    y, sr = librosa.load(wav_path, sr=None)  # Load audio data
     mel = get_mel_spectrogram(y, sr)
 
     img_filename = current_time + '.png'

@@ -94,7 +94,7 @@ recordButton.addEventListener("click", function () {
     // Start recording with updated UI for waiting permission
     startRecording(onDataAvailable, onStopRecording, () => {
       // Once the microphone is accessed, update UI for recording
-      statusText.innerText = "녹음 중입니다. 5초 이상 심장음을 녹음하세요.";
+      statusText.innerText = "녹음 중입니다. 10초 이상 심장음을 녹음하세요.";
       updateButtonForRecording();
       isRecording = true;
     }, () => {
