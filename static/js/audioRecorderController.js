@@ -1,7 +1,7 @@
 // audioRecorderController.js
 import { startRecording, stopRecording } from './audioRecorder.js';
 import { uploadAudio } from './audioUploader.js';
-import { updateButtonForRecording, updateButtonForNotRecording, showRecordingStoppedOnButton, restoreRecordButtonAfterUpload } from './uiController.js';
+import { updateButtonForRecording, updateButtonForNotRecording, showRecordingStoppedOnButton, restoreRecordButtonAfterUpload, updateButtonForWaitingPermission } from './uiController.js';
 
 let isRecording = false;
 let audioChunks = [];
@@ -85,11 +85,20 @@ recordButton.addEventListener("click", function () {
     return;
   }
 
+
   if (!isRecording) {
-    startRecording(onDataAvailable, onStopRecording);
-    statusText.innerText = "녹음 중입니다. 5초 이상 심장음을 녹음하세요.";
-    updateButtonForRecording();
-    isRecording = true;
+    // Update status and button for waiting permission
+    statusText.innerText = "마이크 접근 허용을 기다리고 있습니다";
+    updateButtonForWaitingPermission();
+
+    // Start recording with updated UI for waiting permission
+    startRecording(onDataAvailable, onStopRecording, () => {
+      // Once the microphone is accessed, update UI for recording
+      statusText.innerText = "녹음 중입니다. 5초 이상 심장음을 녹음하세요.";
+      updateButtonForRecording();
+      isRecording = true;
+    });
+    
   } else {
     stopRecording();
     statusText.innerText = "녹음파일 처리중...";

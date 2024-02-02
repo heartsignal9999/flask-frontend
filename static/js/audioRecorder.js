@@ -3,9 +3,13 @@ let mediaRecorder;
 let audioChunks = [];
 let mediaStream;
 
-export const startRecording = (onDataAvailable, onStop) => {
+export const startRecording = (onDataAvailable, onStop, onAccessGranted) => {
   navigator.mediaDevices.getUserMedia({ audio: true })
     .then((stream) => {
+      // Call the onAccessGranted callback
+      if (typeof onAccessGranted === 'function') {
+        onAccessGranted();
+      }
       mediaStream = stream;
       mediaRecorder = new MediaRecorder(stream);
       mediaRecorder.start();

@@ -122,4 +122,13 @@ export const handleUploadFailure = (error, statusText) => {
   updateButtonForNotRecording();
 };
 
-export { updateButtonForRecording, updateButtonForNotRecording, showRecordingStoppedOnButton, restoreRecordButtonAfterUpload };
+function updateButtonForWaitingPermission() {
+  setRecordButtonState({
+    text: "허용 대기중",
+    bgRemoveClasses: ["bg-blue-500", "hover:bg-blue-700", "bg-red-500", "hover:bg-red-700"],
+    bgAddClasses: ["bg-gray-500"],
+    disabled: true
+  });
+}
+
+export { updateButtonForRecording, updateButtonForNotRecording, showRecordingStoppedOnButton, restoreRecordButtonAfterUpload, updateButtonForWaitingPermission };
