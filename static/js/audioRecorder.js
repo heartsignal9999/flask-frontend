@@ -3,10 +3,10 @@ let mediaRecorder;
 let audioChunks = [];
 let mediaStream;
 
-export const startRecording = (onDataAvailable, onStop, onAccessGranted) => {
+export const startRecording = (onDataAvailable, onStop, onAccessGranted, onAccessDenied) => {
   navigator.mediaDevices.getUserMedia({ audio: true })
     .then((stream) => {
-      // Call the onAccessGranted callback
+      // Access granted callback
       if (typeof onAccessGranted === 'function') {
         onAccessGranted();
       }
@@ -19,6 +19,10 @@ export const startRecording = (onDataAvailable, onStop, onAccessGranted) => {
     })
     .catch((error) => {
       console.error("Error accessing media devices:", error);
+      // Access denied callback
+      if (typeof onAccessDenied === 'function') {
+        onAccessDenied();
+      }
     });
 };
 

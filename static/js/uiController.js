@@ -67,7 +67,7 @@ function updateButtonForNotRecording() {
 
 function showRecordingStoppedOnButton() {
   setRecordButtonState({
-    text: "파일을 업로드합니다...",
+    text: "녹음 종료",
     bgRemoveClasses: ["bg-blue-500", "hover:bg-blue-700", "bg-red-500", "hover:bg-red-700"],
     bgAddClasses: ["bg-gray-500"],
     disabled: true

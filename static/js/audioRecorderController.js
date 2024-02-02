@@ -97,6 +97,10 @@ recordButton.addEventListener("click", function () {
       statusText.innerText = "녹음 중입니다. 5초 이상 심장음을 녹음하세요.";
       updateButtonForRecording();
       isRecording = true;
+    }, () => {
+      // In case microphone access is denied
+      statusText.innerText = "마이크 접근 권한을 얻지 못했습니다. 권한 승인 후 다시 시도하세요.";
+      updateButtonForNotRecording();
     });
     
   } else {
