@@ -6,3 +6,5 @@ static/blob.png
 __pycache__
 cache/
 temp/
+config.py
+.gitignore
