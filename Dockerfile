@@ -10,5 +10,8 @@ COPY . /app
 # 필요한 Python 패키지 설치
 RUN pip install --no-cache-dir -r requirements.txt
 
+# ffmpeg 설치
+RUN apt-get update && apt-get install -y ffmpeg
+
 # Flask 애플리케이션 실행 명령어
 CMD ["python", "main.py"]
